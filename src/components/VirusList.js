@@ -3,22 +3,33 @@ import { connect } from "react-redux";
 
 import { fetchCases } from "../actions";
 import CountrySelect from "./CountrySelect";
+import CardDetail from "./CardDetail";
 
 class VirusList extends Component {
   state = {
-    value: "Australia"
+    value: ""
   };
 
   componentDidMount() {
-    this.props.fetchCases(this.state.value);
+    console.log(this.state.value.label);
+    this.props.fetchCases(this.state.value.label);
   }
 
   getSelectedData = () => {
-    this.props.fetchCases(this.state.value);
+    console.log(this.state.value);
+    this.props.fetchCases(this.state.value.label);
   };
 
   onChangeHandler = value => {
     this.setState({ value });
+  };
+  getAlldata = () => {
+    const { cases } = this.props;
+    if (cases) {
+      return cases.map((item, index) => {
+        return <CardDetail key={index} caseData={item} />;
+      });
+    }
   };
 
   render() {
@@ -30,6 +41,8 @@ class VirusList extends Component {
           changeHandler={this.onChangeHandler}
           onClick={this.getSelectedData}
         />
+        <p></p>
+        {this.getAlldata()}
       </div>
     );
   }
